@@ -527,6 +527,8 @@ xdraw(void)
 {
 	unsigned int height, width, i;
 	Image *im = slides[idx].img;
+    char slide_nb[16];
+    unsigned int slide_nb_w, slide_nb_h;
 
 	getfontsize(&slides[idx], &width, &height);
 	XClearWindow(xw.dpy, xw.win);
@@ -548,6 +550,23 @@ xdraw(void)
 			         (xw.w * idx)/(slidecount - 1), progressheight,
 			         1, 0);
 		}
+
+        if (idx > 0){
+            snprintf(slide_nb, sizeof(slide_nb), "%d/%d", idx + 1, slidecount);
+            Drw *d_small = malloc(sizeof(Drw));
+            *d_small = *d;
+            d_small->fonts = drw_fontset_create(d_small, slide_nb_fnt, 1);
+            drw_font_getexts(d_small->fonts, slide_nb, strlen(slide_nb),
+                             &slide_nb_w, &slide_nb_h);
+            drw_text(d_small,
+                     xw.w - slide_nb_w - slide_nb_margin,
+                     xw.h - slide_nb_h - slide_nb_margin,
+                     slide_nb_w,
+                     slide_nb_h,
+                     0,
+                     slide_nb,
+                     0);
+        }
 		drw_map(d, xw.win, 0, 0, xw.w, xw.h);
 	} else {
 		if (!(im->state & SCALED))

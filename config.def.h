@@ -52,3 +52,6 @@ static Filter filters[] = {
 	{ "\\.ff.bz2$", "bunzip2" },
 	{ "\\.[a-z0-9]+$", "2ff" },
 };
+
+static const unsigned int slide_nb_margin = 10;
+static const char *slide_nb_fnt[] = { "fixed:size=16", NULL };
